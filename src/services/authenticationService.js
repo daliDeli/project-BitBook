@@ -9,7 +9,14 @@ class AuthenticationService {
     }
 
     register(userData, errorHandler) {
-        fetchService.post('register', userData, this.successRegister, error => errorHandler(error.response.data.error.message));
+        fetchService.post('register', userData,
+            () => {
+                this.redirectService.reload();
+            },
+            error => {
+                console.log(error)
+                errorHandler(error.response.data.error.message)
+            });
     }
 
     logout() {
@@ -19,11 +26,11 @@ class AuthenticationService {
 
     successLogin(data) {
         sessionStorage.setItem(SESSION_STORAGE_KEY, data.sessionId);
-        redirectService.goTo('/profile');
+        redirectService.goTo('/feed');
     }
 
     successRegister() {
-        redirectService.goTo('/');        
+        
     }
 
     isUserAuthenticated() {

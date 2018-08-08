@@ -3,6 +3,7 @@
 
 .needMargin {
     margin-top: 2em;
+    background: #f0f0f1;
 }
 
 .imgDiv {
@@ -58,6 +59,7 @@ body {
 
 main {
     flex: 1 0 auto;
+    background: #f0f0f1;
 }
 
 .page-flexbox-wrapper {
@@ -88,6 +90,7 @@ main {
     border-radius: 5%;
     border: 1px solid #437C90;    
     float: left;
+    padding: 20px;
 }
 
 .single-image {
@@ -147,4 +150,13 @@ main {
     border: 1px solid #2F394D;
     padding: 5px;
     text-transform: uppercase;    
+}
+
+.filter-wrapper {
+    position: relative;
+}
+
+.filter-wrapper ul {
+    position: absolute;
+    top: 36px;
 }

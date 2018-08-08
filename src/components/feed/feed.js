@@ -148,7 +148,7 @@ class Feed extends Component {
                 if (post.type === 'text' && this.state.filterType === 'text') {
                     return (<div className="section center card-panel" key={post.id}>
                         <Link to={`/feed/${post.type}/${post.id}`} key={post.id}>
-                            <TextPost onPostDelete={this.deletePost} enableDelete={this.isMyPost(post)} post={post} />
+                            <TextPost onPostDelete={this.deletePost} enableDelete={this.isMyPost(post)} post={post}/>
                         </Link>
                     </div>);
                 }
@@ -195,7 +195,7 @@ class Feed extends Component {
 
     displayFilter() {
         return (
-            <div className="section right">
+            <div className="section right filter-wrapper">
                 <button className="dropdown-trigger btn" data-target="dropdown1">Filter Posts</button>
                 <ul id="dropdown1" className="dropdown-content">
                     <li><a id="all" onClick={this.updateFilterType}>All posts</a></li>

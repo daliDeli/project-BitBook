@@ -28,7 +28,7 @@ class Register extends Component {
     bindEventHandlers() {
         this.updateValue = this.updateValue.bind(this);
         this.submitForm = this.submitForm.bind(this);
-        this.errorMessage = this.errorMessage.bind(this);
+        this.errorHandler = this.errorHandler.bind(this);
     }
 
     // Personal methods
@@ -40,6 +40,9 @@ class Register extends Component {
     }
 
     submitForm(event) {
+        this.setState({
+            errorMessage: ''
+        })
         event.preventDefault();
 
         const { name, password, confirmedPassword, email, username } = this.state;
@@ -51,20 +54,19 @@ class Register extends Component {
             email,
             username
         };
-
+        
         let validated = validationService.validateRegister();
 
-        if (validated === true) {
-            authenticationService.register(userData, this.errorMessage);
+        if (validated) {
+            authenticationService.register(userData, this.errorHandler);
         }
     }
 
-    errorMessage(errorMessage) {
+    errorHandler(errorMessage) {
         this.setState({ errorMessage, isHidden: false });
     }
 
     render() {
-
         return (
             <div className="row form-welcome">
                 <form className="col s12" id="register-form" onSubmit={this.submitForm}>
