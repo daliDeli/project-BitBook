@@ -16,7 +16,7 @@ export default class ImagePost extends React.Component {
         return (
             <main className="row image-container">
                 <div className="col s12 imgDiv">
-                    <img className="responsive-img" src={this.props.post.imageUrl} alt='' />
+                    <img className="responsive-img" src={this.props.post.imageUrl } alt='' />
 
                 </div>
                 <div className="col s6">

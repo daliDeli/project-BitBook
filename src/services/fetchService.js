@@ -6,7 +6,7 @@ class FetchService {
     headers() {
 
         let sessionId = sessionStorage.getItem(SESSION_STORAGE_KEY);
-
+        console.log('da li je ID ok ',sessionId);
         return sessionId
             ? { 'SessionId': sessionId, 'Key': API_KEY, 'Content-Type': 'application/json' }
             : { 'Key': API_KEY, 'Content-Type': 'application/json' };
@@ -22,16 +22,16 @@ class FetchService {
             .catch(error => errorHandler(error.response));
     }
 
-    post(url, postData, successHandler, errorHandler) {
-
-        axios({
+    post(url, postData) {
+        
+        return axios({
             method: 'POST',
             url: `${BASE_URL}${url}`,
             data: postData,
             headers: this.headers()
         })
-            .then(response => successHandler(response.data))
-            .catch(error => errorHandler(error));
+            // .then(response => successHandler(response.data))
+            // .catch(error => errorHandler(error));
     }
 
     put(url, postData, successHandler, errorHandler) {

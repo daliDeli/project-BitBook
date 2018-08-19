@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-
+import { redirectService } from '../../services/redirectService';
 import { authenticationService } from '../../services/authenticationService';
 import { validationService } from '../../services/validationService';
+import { SESSION_STORAGE_KEY } from '../../constants';
 
 export default class Login extends Component {
     constructor(props) {
@@ -10,8 +11,6 @@ export default class Login extends Component {
         this.state = this.initState();
         this.bindEventHandlers();
     }
-
-    // Initialization methods
 
     initState() {
         return {
@@ -48,11 +47,17 @@ export default class Login extends Component {
 
         let validated = validationService.validateLogin();
         if (validated === true) {
-            authenticationService.login(userData, this.errorMessage);
+            authenticationService.login(userData, this.errorMessage)
+                .then(data => {
+                    sessionStorage.setItem(SESSION_STORAGE_KEY, data.data.sessionId);
+                    redirectService.goTo('/profile');
+                })
+                .catch(this.errorMessage)
         }
     }
 
-    errorMessage(errorMessage) {
+    errorMessage({errorMessage}) {
+        console.log(errorMessage)
         this.setState({ errorMessage, isHidden: false });
     }
 
@@ -78,7 +83,6 @@ export default class Login extends Component {
                 </form>
                 <div className={['col', 's12', this.state.isHidden && 'hide'].join(' ')}>
                     <div className='error-box'>
-                        <p>SERVER RESPONSE</p>
                         <p className='error-message'>{this.state.errorMessage}</p>
                         <p>PLEASE TRY AGAIN!</p>
                     </div>

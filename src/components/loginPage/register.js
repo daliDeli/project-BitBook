@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { redirectService } from '../../services/redirectService';
 import { authenticationService } from '../../services/authenticationService';
 import { validationService } from '../../services/validationService';
 
@@ -21,17 +21,16 @@ class Register extends Component {
             password: '',
             confirmedPassword: '',
             errorMessage: '',
-            isHidden: true
+            errorMessageDisplayed: false,
+            loginSuccessful: false,
         };
     }
 
     bindEventHandlers() {
         this.updateValue = this.updateValue.bind(this);
         this.submitForm = this.submitForm.bind(this);
-        this.errorHandler = this.errorHandler.bind(this);
+        // this.errorHandler = this.errorHandler.bind(this);
     }
-
-    // Personal methods
 
     updateValue({ target }) {
         this.setState({
@@ -54,19 +53,33 @@ class Register extends Component {
             email,
             username
         };
-        
+
         let validated = validationService.validateRegister();
 
         if (validated) {
-            authenticationService.register(userData, this.errorHandler);
+            authenticationService.register(userData)
+                .then(response => {
+                    this.setState({ loginSuccessful: true });
+                    setTimeout(redirectService.reload, 2000);
+
+                })
+                .catch(error => {
+                    console.log('error', error)
+                    this.setState({
+                        errorMessage: error.response.data.error.message || 'We have an error on our servers',
+                        errorMessageDisplayed: true,
+                    });
+                });
+
         }
     }
 
-    errorHandler(errorMessage) {
-        this.setState({ errorMessage, isHidden: false });
-    }
+    // errorHandler(errorMessage) {
+
+    // }
 
     render() {
+
         return (
             <div className="row form-welcome">
                 <form className="col s12" id="register-form" onSubmit={this.submitForm}>
@@ -97,11 +110,20 @@ class Register extends Component {
                     </div>
                     <button type="submit" className="btn waves-effect waves-light right">Register</button>
                 </form>
-                <div className={['col', 's12', 'error-box', this.state.isHidden && 'hide'].join(' ')}>
-                    <p>SERVER RESPONSE</p>
-                    <p className='error-message'>{this.state.errorMessage}</p>
-                    <p>PLEASE TRY AGAIN!</p>
-                </div>            </div>
+                {this.state.errorMessageDisplayed &&
+                    <div className={['col', 's12', 'error-box'].join(' ')}>
+                        <p>Small problem but ...</p>
+                        <p className='error-message'>{this.state.errorMessage}</p>
+                        <p>Please try again, thank you.</p>
+                    </div>
+                }
+                {this.state.loginSuccessful &&
+                    <div className={['col', 's12','loginSuccessful'].join(' ')}>
+                        <p> You have created a new profile and will be redirected to Login Page... </p>
+                        <p>Thank you and enjoy</p>
+                    </div>
+                }
+            </div>
         );
     }
 }

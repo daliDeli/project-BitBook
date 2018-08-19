@@ -106,14 +106,15 @@ main {
 }
 
 .error-box {
-    border: 1px solid red;
+    background: #D8E0DD;
     text-align: center;    
     margin: 20px 10px 10px 10px;
     padding: 10px;
+    color: firebrick;
 }
 
 .error-message {
-    color: red;
+    color: firebrick;
     text-align: center;
 }
 
@@ -159,4 +160,8 @@ main {
 .filter-wrapper ul {
     position: absolute;
     top: 36px;
+}
+.loginSuccessful{
+    background: #D8E0DD;
+    text-align: center;
 }

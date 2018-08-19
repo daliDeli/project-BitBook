@@ -5,32 +5,17 @@ import { SESSION_STORAGE_KEY } from '../constants';
 class AuthenticationService {
 
     login(userData, errorHandler) {
-        fetchService.post('login', userData, this.successLogin, error => errorHandler(error.response.data.error.message));
+        return fetchService.post('login', userData);
     }
 
     register(userData, errorHandler) {
-        fetchService.post('register', userData,
-            () => {
-                this.redirectService.reload();
-            },
-            error => {
-                console.log(error)
-                errorHandler(error.response.data.error.message)
-            });
+        
+        return fetchService.post('register', userData)
     }
 
     logout() {
         sessionStorage.removeItem(SESSION_STORAGE_KEY);
         redirectService.goTo('/');
-    }
-
-    successLogin(data) {
-        sessionStorage.setItem(SESSION_STORAGE_KEY, data.sessionId);
-        redirectService.goTo('/feed');
-    }
-
-    successRegister() {
-        
     }
 
     isUserAuthenticated() {
