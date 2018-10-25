@@ -4,12 +4,11 @@ import { SESSION_STORAGE_KEY } from '../constants';
 
 class AuthenticationService {
 
-    login(userData, errorHandler) {
+    login(userData) {
         return fetchService.post('login', userData);
     }
 
-    register(userData, errorHandler) {
-        
+    register(userData) {
         return fetchService.post('register', userData)
     }
 

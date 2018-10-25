@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-
 import { validationService } from '../../services/validationService';
 import { dataService } from '../../services/dataService';
 import { redirectService } from '../../services/redirectService';
-
 import Profile from '../../entities/Profile';
 
 export default class EditProfile extends Component {
@@ -52,7 +50,7 @@ export default class EditProfile extends Component {
         let validated = validationService.validateEditProfile();
 
         if (validated === true) {
-            dataService.updateProfile(profile, this.updateSuccess, error => console.warn(error));        
+            dataService.updateProfile(profile, this.updateSuccess);        
         }
     }
 

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
-
 import { dataService } from '../../services/dataService';
-import PeoplePattern from './peoplePattern';
-import Search from '../common/search';
+import PeoplePattern from './PeoplePattern';
+import Search from '../common/Search';
 
 
 class People extends Component {

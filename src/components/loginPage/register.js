@@ -7,14 +7,7 @@ class Register extends Component {
     constructor(props) {
         super(props);
 
-        this.state = this.initState();
-        this.bindEventHandlers();
-    }
-
-    // Initialization methods
-
-    initState() {
-        return {
+        this.state = {
             name: '',
             username: '',
             email: '',
@@ -26,19 +19,13 @@ class Register extends Component {
         };
     }
 
-    bindEventHandlers() {
-        this.updateValue = this.updateValue.bind(this);
-        this.submitForm = this.submitForm.bind(this);
-        // this.errorHandler = this.errorHandler.bind(this);
-    }
-
-    updateValue({ target }) {
+    updateValue = ({ target }) => {
         this.setState({
             [target.id]: target.value
         });
     }
 
-    submitForm(event) {
+    submitForm = event => {
         this.setState({
             errorMessage: ''
         })
@@ -64,7 +51,6 @@ class Register extends Component {
 
                 })
                 .catch(error => {
-                    console.log('error', error)
                     this.setState({
                         errorMessage: error.response.data.error.message || 'We have an error on our servers',
                         errorMessageDisplayed: true,

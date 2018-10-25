@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import M from 'materialize-css';
 
-import Welcome from './welcome';
-import Login from './login';
-import Register from './register';
+import Welcome from './Welcome';
+import Login from './Login';
+import Register from './Register';
 
 class LoginPage extends Component {
 

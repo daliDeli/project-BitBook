@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { dataService } from '../../services/dataService';
 import { IMG_PLACEHOLDER, SESSION_STORAGE_USER_KEY } from '../../constants';
-import EditProfile from './editProfile';
+import EditProfile from './EditProfile';
 
 
 export default class ProfilePage extends Component {
@@ -39,9 +39,7 @@ export default class ProfilePage extends Component {
     }
 
     bindEventHandlers() {
-        this.successProfile = this.successProfile.bind(this);
         this.openModal = this.openModal.bind(this);
-        this.errorProfile = this.errorProfile.bind(this);
         this.closeModal = this.closeModal.bind(this);
     }
 
@@ -49,18 +47,14 @@ export default class ProfilePage extends Component {
         const userId = this.props.match.params.id;
 
         if (!userId) {
-            dataService.fetchProfile(this.successProfile, this.errorProfile);
+            dataService.fetchProfile(this.successProfile);
             return;
         }
-        dataService.fetchUsersById(userId, this.successProfile, this.errorProfile);
+        dataService.fetchUsersById(userId, this.successProfile);
     }
 
-    successProfile(profile) {
+    successProfile = profile => {
         this.setState({ profile });
-    }
-
-    errorProfile(error) {
-        console.warn(error);
     }
 
     openModal() {
@@ -81,7 +75,7 @@ export default class ProfilePage extends Component {
     componentWillReceiveProps(nextProps) {
 
         if (this.props.match.params.id !== nextProps.match.params.id) {
-            dataService.fetchProfile(this.successProfile, this.errorProfile);
+            dataService.fetchProfile(this.successProfile);
         }
     }
 

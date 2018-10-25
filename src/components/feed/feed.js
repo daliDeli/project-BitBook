@@ -7,22 +7,16 @@ import M from 'materialize-css';
 import { SESSION_STORAGE_USER_KEY } from '../../constants';
 import { dataService } from '../../services/dataService';
 import { redirectService } from '../../services/redirectService';
-import TextPost from './textPost';
-import VideoPost from './videoPost';
-import ImagePost from './imagePost';
+import TextPost from './TextPost';
+import VideoPost from './VideoPost';
+import ImagePost from './ImagePost';
 
 
 class Feed extends Component {
     constructor(props) {
         super(props);
 
-        this.state = this.initState();
-        this.bindEventHandlers();
-    }
-
-    // Initialization methods
-    initState() {
-        return {
+        this.state = {
             posts: [],
             modalIsOpen: false,
             postContent: '',
@@ -33,6 +27,7 @@ class Feed extends Component {
             hasMore: true,
             postCount: 20
         };
+        this.bindEventHandlers();
     }
 
     initDropdown() {

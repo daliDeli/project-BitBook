@@ -6,7 +6,7 @@ class Footer extends Component {
             <footer className="page-footer">
                 <div className="">
                     <div className="container center">
-                        © 2017 Copyright Text
+                        © {new Date().getFullYear()} Copyright Text
                     </div>
                 </div>
             </footer>

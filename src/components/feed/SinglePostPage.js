@@ -49,11 +49,11 @@ class SinglePostPage extends Component {
     }
 
     findPost(type) {
-        dataService.fetchAnyPosts(type, this.props.match.params.singleId, this.handlePost, error => console.warn(error));
+        dataService.fetchAnyPosts(type, this.props.match.params.singleId, this.handlePost);
     }
 
     getAllComments() {
-        dataService.fetchCommentsPosts(this.props.match.params.singleId, this.handleComments, error => console.warn(error));
+        dataService.fetchCommentsPosts(this.props.match.params.singleId, this.handleComments);
     }
 
     handlePost(post) {
@@ -77,8 +77,8 @@ class SinglePostPage extends Component {
         };
 
         dataService.postComments(data,
-            response => window.location.reload(),
-            error => console.warn(error));
+            () => window.location.reload(),
+        );
 
         this.getAllComments();
     }

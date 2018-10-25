@@ -6,7 +6,6 @@ class FetchService {
     headers() {
 
         let sessionId = sessionStorage.getItem(SESSION_STORAGE_KEY);
-        console.log('da li je ID ok ',sessionId);
         return sessionId
             ? { 'SessionId': sessionId, 'Key': API_KEY, 'Content-Type': 'application/json' }
             : { 'Key': API_KEY, 'Content-Type': 'application/json' };
@@ -30,8 +29,6 @@ class FetchService {
             data: postData,
             headers: this.headers()
         })
-            // .then(response => successHandler(response.data))
-            // .catch(error => errorHandler(error));
     }
 
     put(url, postData, successHandler, errorHandler) {

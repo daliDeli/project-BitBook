@@ -8,34 +8,21 @@ export default class Login extends Component {
     constructor(props) {
         super(props);
 
-        this.state = this.initState();
-        this.bindEventHandlers();
-    }
-
-    initState() {
-        return {
+        this.state = {
             lusername: '',
             lpassword: '',
-            lerrorMessage: '',
+            errorMessage: 'Incorect username or password, please try again ',
             isHidden: true
         };
     }
 
-    bindEventHandlers() {
-        this.submitForm = this.submitForm.bind(this);
-        this.updateValue = this.updateValue.bind(this);
-        this.errorMessage = this.errorMessage.bind(this);
-    }
-
-
-    updateValue({ target }) {
+    updateValue = ({ target }) => {
         this.setState({
             [target.id]: target.value
         });
     }
 
-
-    submitForm(event) {
+    submitForm = event => {
         event.preventDefault();
 
         const { lusername, lpassword } = this.state;
@@ -48,17 +35,17 @@ export default class Login extends Component {
         let validated = validationService.validateLogin();
         if (validated === true) {
             authenticationService.login(userData, this.errorMessage)
-                .then(data => {
+                .then(
+                    data => {
                     sessionStorage.setItem(SESSION_STORAGE_KEY, data.data.sessionId);
                     redirectService.goTo('/profile');
                 })
-                .catch(this.errorMessage)
+                .catch(
+                    () =>{
+                        this.setState({ isHidden: false });
+                    }
+                )
         }
-    }
-
-    errorMessage({errorMessage}) {
-        console.log(errorMessage)
-        this.setState({ errorMessage, isHidden: false });
     }
 
     render() {
@@ -66,7 +53,6 @@ export default class Login extends Component {
         return (
             <div className="row form-welcome">
                 <form className="col s12" onSubmit={this.submitForm} >
-
                     <div className="input-field col s12">
                         <input id="lusername" type="text" onChange={this.updateValue} value={this.state.email} />
                         <label htmlFor="lusername">Username</label>
@@ -84,7 +70,6 @@ export default class Login extends Component {
                 <div className={['col', 's12', this.state.isHidden && 'hide'].join(' ')}>
                     <div className='error-box'>
                         <p className='error-message'>{this.state.errorMessage}</p>
-                        <p>PLEASE TRY AGAIN!</p>
                     </div>
                 </div>
             </div>

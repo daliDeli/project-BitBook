@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import M from 'materialize-css';
-
 import { authenticationService } from '../../services/authenticationService';
 
 export default class Header extends Component {
