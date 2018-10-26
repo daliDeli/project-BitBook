@@ -6,6 +6,7 @@ import M from 'materialize-css';
 import { SESSION_STORAGE_USER_KEY } from '../../constants';
 import { dataService } from '../../services/dataService';
 import { redirectService } from '../../services/redirectService';
+import { CreatePost } from './CreatePost';
 import TextPost from './TextPost';
 import { VideoPost } from './VideoPost';
 import { ImagePost } from './ImagePost';
@@ -24,6 +25,33 @@ class Feed extends Component {
             filterType: 'all',
             hasMore: true,
             postCount: 20
+        };
+         this.style = {
+            overlay: {
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.75)'
+            },
+            content: {
+                position: 'absolute',
+                top: 'none',
+                left: 'none',
+                bottom: '100px',
+                right: '90px',
+                width: '440px',
+                height: '290px',
+                border: '1px solid #ccc',
+                background: '#DAE2DF',
+                overflow: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                borderRadius: '4px',
+                outline: 'none',
+                padding: '20px'
+
+            }
         };
         this.bindEventHandlers();
     }
@@ -128,8 +156,6 @@ class Feed extends Component {
         });
     }
 
-    // Render methods
-
     displayPosts() {
         return this.state.posts.map(post => {
 
@@ -214,131 +240,6 @@ class Feed extends Component {
         );
     }
 
-    displayModal() {
-
-        const style = {
-            overlay: {
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: 'rgba(255, 255, 255, 0.75)'
-            },
-            content: {
-                position: 'absolute',
-                top: 'none',
-                left: 'none',
-                bottom: '100px',
-                right: '90px',
-                width: '440px',
-                height: '290px',
-                border: '1px solid #ccc',
-                background: '#DAE2DF',
-                overflow: 'auto',
-                WebkitOverflowScrolling: 'touch',
-                borderRadius: '4px',
-                outline: 'none',
-                padding: '20px'
-
-            }
-        };
-
-        if (this.state.modalType === 'text') {
-            return (
-                <Modal
-                    isOpen={this.state.modalIsOpen}
-                    onRequestClose={this.closeModal}
-                    style={style}
-                >
-                    <div className="row">
-                        <div className="col s12 row section modal-format">
-                            <h4 className="col s10">NEW TEXT POST</h4>
-                            <p className="col s2">
-                                <span className="right"><i style={{ cursor: 'pointer' }} onClick={this.closeModal} className="material-icons">close</i></span>
-                            </p>
-                        </div>
-                        <form className="col s12">
-                            <div className="row modal-format">
-                                <div className="input-field col s12">
-                                    <textarea id="text" className="materialize-textarea" onChange={this.valueHandler} value={this.state.postContent} ></textarea>
-                                    <label htmlFor="text">Post Content</label>
-                                </div>
-                                <div className="input-field col s12 ">
-                                    <button className="btn waves-effect waves-light right" type="submit" name="action" onClick={this.submitForm}>POST
-                                        <i className="material-icons right">send</i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </Modal>
-            );
-        }
-        if (this.state.modalType === 'image') {
-            return (
-                <Modal
-                    isOpen={this.state.modalIsOpen}
-                    onRequestClose={this.closeModal}
-                    style={style}
-                >
-                    <div className="row">
-                        <div className="col s12 row section modal-format">
-                            <h4 className="col s10">NEW IMAGE POST</h4>
-                            <p className="col s2">
-                                <span className="right"><i style={{ cursor: 'pointer' }} onClick={this.closeModal} className="material-icons">close</i></span>
-                            </p>
-                        </div>
-                        <form className="col s12">
-                            <div className="row modal-format">
-                                <div className="input-field col s12">
-                                    <input type="text" id="image" onChange={this.valueHandler} value={this.state.imageContent} />
-                                    <label htmlFor="image">Image link</label>
-                                </div>
-                                <div className="input-field col s12 ">
-                                    <button className="btn waves-effect waves-light right" type="submit" name="action" onClick={this.submitForm}>POST
-                                        <i className="material-icons right">send</i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </Modal>
-            );
-        }
-        if (this.state.modalType === 'video') {
-            return (
-                <Modal
-                    isOpen={this.state.modalIsOpen}
-                    onRequestClose={this.closeModal}
-                    style={style}
-                >
-                    <div className="row">
-                        <div className="col s12 row section modal-format">
-                            <h4 className="col s10">NEW VIDEO POST</h4>
-                            <p className="col s2">
-                                <span className="right"><i style={{ cursor: 'pointer' }} onClick={this.closeModal} className="material-icons">close</i></span>
-                            </p>
-                        </div>
-                        <form className="col s12">
-                            <div className="row modal-format">
-                                <div className="input-field col s12">
-                                    <input type="text" id="video" onChange={this.valueHandler} value={this.state.videoContent} />
-                                    <label htmlFor="video">YouTube video link</label>
-                                </div>
-                                <div className="input-field col s12 ">
-                                    <button className="btn waves-effect waves-light right" type="submit" name="action" onClick={this.submitForm}>POST
-                                        <i className="material-icons right">send</i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </Modal>
-            );
-        }
-    }
-
     openModal(type) {
         this.setState({ modalIsOpen: true, modalType: type });
     }
@@ -359,26 +260,45 @@ class Feed extends Component {
             <main>
                 <div className="row container">
                     <div className="col s9 center">
+
                         <InfiniteScroll
                             pageStart={0}
                             loadMore={this.fetchAllPosts}
                             hasMore={this.state.hasMore}
-                            loader={<div className="preloader-wrapper big active loader">
-                                <div className="spinner-layer">
-                                    <div className="circle-clipper left">
-                                        <div className="circle"></div>
-                                    </div><div className="gap-patch">
-                                        <div className="circle"></div>
-                                    </div><div className="circle-clipper right">
-                                        <div className="circle"></div>
+                            useWindow={true}
+                            loader={
+                                <div className="preloader-wrapper big active loader">
+                                    <div className="spinner-layer">
+                                        <div className="circle-clipper left">
+                                            <div className="circle"></div>
+                                        </div><div className="gap-patch">
+                                            <div className="circle"></div>
+                                        </div><div className="circle-clipper right">
+                                            <div className="circle"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>}
-                            useWindow={true}
+                            }
                         >
                             {this.displayPosts()}
                         </InfiniteScroll>
-                        {this.displayModal()}
+
+                        <Modal
+                            isOpen={this.state.modalIsOpen}
+                            onRequestClose={this.closeModal}
+                            style={this.style}
+                        >
+                            <CreatePost 
+                                modalType={this.state.modalType}
+                                postContent={this.state.postContent}
+                                videoContent={this.state.videoContent}
+                                imageContent={this.state.imageContent}
+                                closeModal={this.closeModal}
+                                valueHandler={this.valueHandler}
+                                submitForm={this.submitForm}
+                            />
+                        </Modal>
+                        
                     </div>
                     <div className="col s3">
                         {this.displayFilter()}
