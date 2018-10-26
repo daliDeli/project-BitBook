@@ -5,22 +5,13 @@ export default class Search extends Component {
     constructor(props) {
         super(props);
 
-        this.state = this.initState();
-        this.bindEventHandlers();
-    }
-
-    initState() {
-        return {
+        this.state = {
             searchString: ''
         };
     }
 
-    bindEventHandlers() {
-        this.searchRequest = this.searchRequest.bind(this);
-    }
-
-    searchRequest(event) {
-        const searchString = event.target.value;
+    searchRequest = e => {
+        const searchString = e.target.value;
 
         this.setState({
             searchString

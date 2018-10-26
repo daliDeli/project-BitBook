@@ -5,37 +5,19 @@ export default class CreateComments extends Component {
     constructor(props) {
         super(props);
 
-        this.state = this.initState();
-        this.bindEventHandlers();
-    }
-
-    initState() {
-        return {
+        this.state = {
             comment: ''
         };
     }
 
-    bindEventHandlers() {
-        this.sendComments = this.sendComments.bind(this);
-        this.updateValue = this.updateValue.bind(this);
-    }
-
-
-
-    sendComments(e) {
+    sendComments = e => {
         e.preventDefault();
-
-        const comment = this.state.comment;
-
-        this.props.giveComment(comment);
-
+        this.props.giveComment(this.state.comment);
     }
 
-    updateValue(event) {
-        const comment = event.target.value;
-
+    updateValue = e => {
         this.setState({
-            comment
+            comment: e.target.value
         });
     }
 

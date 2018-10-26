@@ -11,14 +11,7 @@ export default class ProfilePage extends Component {
     constructor(props) {
         super(props);
 
-        this.state = this.initState();
-        this.bindEventHandlers();
-    }
-
-    // Initialization methods
-
-    initState() {
-        return {
+        this.state = {
             profile: {
                 name: 'loading...',
                 about: 'loading...',
@@ -32,10 +25,23 @@ export default class ProfilePage extends Component {
                 userId: 0
             }
         };
+        this.bindEventHandlers();
     }
 
     initModal() {
         Modal.setAppElement('body');        
+    }
+
+    componentDidMount() {
+        this.collectProfileInfo();
+        this.initModal();
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        if (this.props.match.params.id !== nextProps.match.params.id) {
+            dataService.fetchProfile(this.successProfile);
+        }
     }
 
     bindEventHandlers() {
@@ -64,22 +70,6 @@ export default class ProfilePage extends Component {
     closeModal() {
         this.setState({ modalIsOpen: false });
     }
-
-    // lifecycle methods
-
-    componentDidMount() {
-        this.collectProfileInfo();
-        this.initModal();
-    }
-
-    componentWillReceiveProps(nextProps) {
-
-        if (this.props.match.params.id !== nextProps.match.params.id) {
-            dataService.fetchProfile(this.successProfile);
-        }
-    }
-
-    // Render methods 
 
     renderModal() {
 

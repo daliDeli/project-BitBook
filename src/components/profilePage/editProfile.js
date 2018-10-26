@@ -8,13 +8,7 @@ export default class EditProfile extends Component {
     constructor(props) {
         super(props);
 
-        this.state = this.initState();
-        this.bindEventHandlers();
-    }
-
-    // Initialization methods
-    initState() {
-        return {
+        this.state = {
             name: '',
             about: '',
             email: '',
@@ -23,22 +17,17 @@ export default class EditProfile extends Component {
         };
     }
 
-    bindEventHandlers() {
-        this.submitForm = this.submitForm.bind(this);
-        this.updateValue = this.updateValue.bind(this);
-    }
-
     updateSuccess(answer) {
         redirectService.reload();
     }
 
-    updateValue({ target }) {
+    updateValue = ({ target }) => {
         this.setState({
             [target.id]: target.value
         });
     }
 
-    submitForm(event) {
+    submitForm = event => {
         event.preventDefault();
 
         const { name, email, about, aboutShort, avatarUrl } = this.state;

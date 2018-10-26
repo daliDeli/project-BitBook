@@ -3,14 +3,12 @@ import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import Modal from 'react-modal';
 import M from 'materialize-css';
-
 import { SESSION_STORAGE_USER_KEY } from '../../constants';
 import { dataService } from '../../services/dataService';
 import { redirectService } from '../../services/redirectService';
 import TextPost from './TextPost';
-import VideoPost from './VideoPost';
-import ImagePost from './ImagePost';
-
+import { VideoPost } from './VideoPost';
+import { ImagePost } from './ImagePost';
 
 class Feed extends Component {
     constructor(props) {
@@ -49,51 +47,47 @@ class Feed extends Component {
     }
 
     bindEventHandlers() {
-        this.successHandler = this.successHandler.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.valueHandler = this.valueHandler.bind(this);
-        this.submitForm = this.submitForm.bind(this);
-        this.isMyPost = this.isMyPost.bind(this);
-        this.deletePost = this.deletePost.bind(this);
-        this.fetchAllPosts = this.fetchAllPosts.bind(this);
-        this.updateFilterType = this.updateFilterType.bind(this);
     }
 
-    fetchAllPosts(page) {
-        dataService.fetchAllPosts(this.successHandler, error => console.warn(error), page * 10);
+    fetchAllPosts = page => {
+        dataService.fetchAllPosts(
+            posts => {
+                this.setState({
+                    posts
+                })
+            },
+            error => console.warn(error),
+            page * 10
+        );
 
         if (this.state.postCount <= page * 10) {
             this.setState({ hasMore: false });
         }
     }
 
-    successHandler(posts) {
-        this.setState({
-            posts
-        });
-    }
-
-    valueHandler(event) {
-        if (event.target.id === 'text') {
+    valueHandler = e => {
+        const value = e.target.value;
+        if (e.target.id === 'text') {
             this.setState({
-                postContent: event.target.value
+                postContent: value
             });
         };
-        if (event.target.id === 'image') {
+        if (e.target.id === 'image') {
             this.setState({
-                imageContent: event.target.value
+                imageContent: value
             });
         };
-        if (event.target.id === 'video') {
+        if (e.target.id === 'video') {
             this.setState({
-                videoContent: event.target.value
+                videoContent: value
             });
         };
     }
 
-    submitForm(event) {
-        event.preventDefault();
+    submitForm = e => {
+        e.preventDefault();
 
         const data = {
             userId: parseInt(sessionStorage.getItem(SESSION_STORAGE_USER_KEY), 10),
@@ -113,22 +107,22 @@ class Feed extends Component {
             data.type = 'Image';
         };
 
-        dataService.sendPost(data, response => redirectService.goTo('/'), error => console.warn(error));
+        dataService.sendPost(data, () => redirectService.goTo('/'), error => console.warn(error));
         this.closeModal();
     }
 
-    isMyPost(post) {
+    isItMyPost = post => {
         const profileId = sessionStorage.getItem(SESSION_STORAGE_USER_KEY);
         return parseInt(post.userId, 10) === parseInt(profileId, 10);
     }
 
-    deletePost(postId) {
+    deletePost = postId => {
         dataService.deletePost(postId,
-            postdelete => redirectService.goTo('/feed'),
+            () => redirectService.goTo('/feed'),
             error => console.warn(error));
     }
 
-    updateFilterType({ target }) {
+    updateFilterType = ({ target }) => {
         this.setState({
             filterType: target.id
         });
@@ -143,21 +137,21 @@ class Feed extends Component {
                 if (post.type === 'text' && this.state.filterType === 'text') {
                     return (<div className="section center card-panel" key={post.id}>
                         <Link to={`/feed/${post.type}/${post.id}`} key={post.id}>
-                            <TextPost onPostDelete={this.deletePost} enableDelete={this.isMyPost(post)} post={post}/>
+                            <TextPost onPostDelete={this.deletePost} enableDelete={this.isItMyPost(post)} post={post}/>
                         </Link>
                     </div>);
                 }
                 if (post.type === 'video' && this.state.filterType === 'video') {
                     return (<div className="section center card-panel" key={post.id}>
                         <Link to={`/feed/${post.type}/${post.id}`} key={post.id}>
-                            <VideoPost post={post} onPostDelete={this.deletePost} enableDelete={this.isMyPost(post)} />
+                            <VideoPost post={post} onPostDelete={this.deletePost} enableDelete={this.isItMyPost(post)} />
                         </Link>
                     </div>);
                 }
                 if (post.type === 'image' && this.state.filterType === 'image') {
                     return (<div className="section center card-panel" key={post.id}>
                         <Link to={`/feed/${post.type}/${post.id}`} key={post.id}>
-                            <ImagePost post={post} onPostDelete={this.deletePost} enableDelete={this.isMyPost(post)} />
+                            <ImagePost post={post} onPostDelete={this.deletePost} enableDelete={this.isItMyPost(post)} />
                         </Link>
                     </div>);
                 }
@@ -165,21 +159,21 @@ class Feed extends Component {
                 if (post.type === 'text') {
                     return (<div className="section center card-panel" key={post.id}>
                         <Link to={`/feed/${post.type}/${post.id}`} key={post.id}>
-                            <TextPost onPostDelete={this.deletePost} enableDelete={this.isMyPost(post)} post={post} />
+                            <TextPost onPostDelete={this.deletePost} enableDelete={this.isItMyPost(post)} post={post} />
                         </Link>
                     </div>);
                 }
                 if (post.type === 'video') {
                     return (<div className="section center card-panel" key={post.id}>
                         <Link to={`/feed/${post.type}/${post.id}`} key={post.id}>
-                            <VideoPost post={post} onPostDelete={this.deletePost} enableDelete={this.isMyPost(post)} />
+                            <VideoPost post={post} onPostDelete={this.deletePost} enableDelete={this.isItMyPost(post)} />
                         </Link>
                     </div>);
                 }
                 if (post.type === 'image') {
                     return (<div className="section center card-panel" key={post.id}>
                         <Link to={`/feed/${post.type}/${post.id}`} key={post.id}>
-                            <ImagePost post={post} onPostDelete={this.deletePost} enableDelete={this.isMyPost(post)} />
+                            <ImagePost post={post} onPostDelete={this.deletePost} enableDelete={this.isItMyPost(post)} />
                         </Link>
                     </div>);
                 }
@@ -345,7 +339,6 @@ class Feed extends Component {
         }
     }
 
-    //Modal methods
     openModal(type) {
         this.setState({ modalIsOpen: true, modalType: type });
     }

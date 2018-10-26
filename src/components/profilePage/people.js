@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import { dataService } from '../../services/dataService';
-import PeoplePattern from './PeoplePattern';
+import { PeoplePattern } from './PeoplePattern';
 import Search from '../common/Search';
 
 
@@ -10,14 +10,7 @@ class People extends Component {
     constructor(props) {
         super(props);
 
-        this.state = this.initState();
-        this.bindEventHandlers();
-    }
-
-    // Initialization methods
-
-    initState() {
-        return {
+        this.state = {
             users: [],
             filteredUsers: [],
             error: '',
@@ -26,30 +19,9 @@ class People extends Component {
         };
     }
 
-    bindEventHandlers() {
-        this.updateStateWithUsers = this.updateStateWithUsers.bind(this);
-        this.searchHandler = this.searchHandler.bind(this);
-        this.handleError = this.handleError.bind(this);
-        this.loadMoreUsers = this.loadMoreUsers.bind(this);
-    }
-
-    // Custom methods
-
-    updateStateWithUsers(users) {
-        this.setState({
-            users,
-            filteredUsers: users
-        });
-    }
-
-    handleError(error) {
-        console.warn(error);
-    }
-
-    searchHandler(searchString) {
-
+    searchHandler = searchString =>{
         const currentUsers = this.state.users;
-
+        
         if (searchString === '') {
             this.setState({
                 filteredUsers: currentUsers
@@ -57,15 +29,28 @@ class People extends Component {
             return;
         }
 
-        const filteredUsers = currentUsers.filter((item) => {
-            return item.name.includes(searchString);
-        });
+        const filteredUsers = currentUsers.filter(
+            item => {
+                return item.name.includes(searchString);
+            }
+        );
 
         this.setState({ filteredUsers });
     }
 
-    loadMoreUsers(page) {
-        dataService.fetchUsers(this.updateStateWithUsers, this.handleError, page * 5);
+    loadMoreUsers = page => {
+        dataService.fetchUsers(
+            users => {
+                this.setState({
+                    users,
+                    filteredUsers: users
+                });
+            },
+            error => {
+                console.warn(error);
+            },
+            page * 5
+        );
 
         if (page > this.state.pageNumber) {
             this.setState({ hasMore: false });
@@ -75,7 +60,8 @@ class People extends Component {
     render() {
 
         let items = this.state.filteredUsers.map(user => {
-            return (<Link to={`/people/${user.id}`} key={user.id}>
+            return (
+            <Link to={`/people/${user.id}`} key={user.id}>
                 <PeoplePattern user={user} key={user.id} />
             </Link>);
         });

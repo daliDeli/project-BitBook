@@ -5,24 +5,15 @@ export default class TextPost extends Component {
     constructor(props) {
         super(props);
         
-        this.state = this.initState();
-        this.bindEventHandlers();
-    }
-
-    initState() {
-        return {
+        this.state = {
             posts: {
                 text: 'Loading post ...',
                 id: ''
             }
-        };
+        }
     }
 
-    bindEventHandlers() {
-        this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
-    }
-
-    onDeleteButtonClick() {
+    deleteButton = () => {
         this.props.onPostDelete(this.props.post.id);
     }
 
@@ -43,7 +34,7 @@ export default class TextPost extends Component {
                     </p>
                 </div>
                 <div className="col s12">
-                    {this.props.enableDelete ? <button className="btn small center" onClick={this.onDeleteButtonClick}>DELETE</button> : ''}
+                    {this.props.enableDelete ? <button className="btn small center" onClick={this.deleteButton}>DELETE</button> : ''}
                 </div>
             </div>
         );

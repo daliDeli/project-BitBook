@@ -9,14 +9,9 @@ class SinglePostPage extends Component {
     constructor(props) {
         super(props);
 
-        this.state = this.initState();
-        this.bindEventHandlers();
-    }
-
-    initState() {
-        return {
+        this.state = {
             post: {
-                videoUrl: 'dasdasdasdasdasdasdadas'
+                videoUrl: ''
             },
             type: '',
             comments: '',
@@ -24,18 +19,14 @@ class SinglePostPage extends Component {
         };
     }
 
-    bindEventHandlers() {
-        this.whichType = this.whichType.bind(this);
-        this.whichRenderType = this.whichRenderType.bind(this);
-        this.giveComment = this.giveComment.bind(this);
-        this.handlePost = this.handlePost.bind(this);
-        this.handleComments = this.handleComments.bind(this);
+    componentDidMount() {
+        this.getAllComments();
+        this.whichType();
     }
 
     whichType() {
-
-        let param = this.props.match.params.type;
-        let type = '';
+        const param = this.props.match.params.type;
+        let type;
 
         if (param === 'text') {
             type = 'TextPosts';
@@ -49,27 +40,28 @@ class SinglePostPage extends Component {
     }
 
     findPost(type) {
-        dataService.fetchAnyPosts(type, this.props.match.params.singleId, this.handlePost);
+        dataService.fetchAnyPosts(type,
+            this.props.match.params.singleId,
+            post => {
+                this.setState({
+                    post
+                });
+            }
+        );
     }
 
     getAllComments() {
-        dataService.fetchCommentsPosts(this.props.match.params.singleId, this.handleComments);
+        dataService.fetchCommentsPosts(
+            this.props.match.params.singleId,
+            singleComments => {
+                this.setState({
+                    singleComments
+                });
+            }
+        );
     }
 
-    handlePost(post) {
-        this.setState({
-            post
-        });
-    }
-
-    handleComments(singleComments) {
-        this.setState({
-            singleComments
-        });
-    }
-
-    // radi post i get metode
-    giveComment(comment) {
+    giveComment = comment => {
 
         const data = {
             postId: this.state.post.id,
@@ -97,11 +89,6 @@ class SinglePostPage extends Component {
         } else if (type === 'image') {
             return <img className='single-image' alt='' src={imageUrl} />;
         }
-    }
-
-    componentDidMount() {
-        this.getAllComments();
-        this.whichType();
     }
 
     render() {

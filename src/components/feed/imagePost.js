@@ -1,42 +1,28 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-export default class ImagePost extends React.Component {
-    constructor(props) {
-        super(props);
+export const ImagePost = props => {
 
-        this.onDeleteButtonClick = this.onDeleteButtonClick.bind(this);
-    }
-
-    onDeleteButtonClick() {
-        this.props.onPostDelete(this.props.post.id);
-    }
-
-    render() {
         return (
             <main className="row image-container">
                 <div className="col s12 imgDiv">
-                    <img className="responsive-img" src={this.props.post.imageUrl } alt='' />
+                    <img className="responsive-img" src={props.post.imageUrl } alt='User uploaded post' />
 
                 </div>
                 <div className="col s6">
-                    <p className = "left">{this.props.post.type} post </p>
+                    <p className = "left">{props.post.type} post </p>
                 </div>
                 <div className="col s6">
                     <p className="right">
-                        Comments: {this.props.post.commentsNum}
+                        Comments: {props.post.commentsNum}
                     </p>
                 </div>
                 <div className="col s12">
-                    {this.props.enableDelete ? <button className="btn small center" onClick={this.onDeleteButtonClick}>DELETE</button> : ''}
+                    {props.enableDelete ? 
+                    <button className="btn small center" onClick={() => { props.onPostDelete(props.post.id)}}>DELETE</button> 
+                    : ''
+                    }
                 </div>
             </main>
         );
     }
-}
 
-ImagePost.propTypes = {
-    post: PropTypes.object,
-    enableDelete: PropTypes.bool,
-    onPostDelete: PropTypes.func
-};

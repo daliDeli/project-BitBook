@@ -5,11 +5,7 @@ export default class SingleComments extends Component {
     constructor(props) {
         super(props);
 
-        this.state = this.initState();
-    }
-
-    initState() {
-        return {
+        this.state = {
             comment: {
                 id: 0,
                 dateCreated: '',
@@ -27,9 +23,8 @@ export default class SingleComments extends Component {
 
         return (
             <div className="row commentDiv">
-
                 <div className="col s6">
-                    <strong className='author-comment'> {authorName}</strong> 
+                    <strong className='author-comment'> {authorName} </strong> 
                     <span> {body} </span>
                 </div>
 

@@ -23,13 +23,13 @@ export default class Header extends Component {
                             <li><Link to="/feed">Feed</Link></li>
                             <li><Link to="/people">People</Link></li>
                             <li><Link to="/profile">Profile</Link></li>
-                            <li><a onClick={authenticationService.logout}>Logout </a> </li>
+                            <li><a onClick={authenticationService.logout}> Logout </a> </li>
                         </ul>
                         <ul id="mobile-demo" className="sidenav">
                             <li><Link to="/feed">Feed</Link></li>
                             <li><Link to="/people">People</Link></li>
                             <li><Link to="/profile">Profile</Link></li>
-                            <li><a onClick={authenticationService.logout}>Logout </a> </li>
+                            <li><a onClick={authenticationService.logout}> Logout </a> </li>
                         </ul>
                     </div>
                 </nav>
